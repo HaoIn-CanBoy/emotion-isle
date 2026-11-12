@@ -111,7 +111,7 @@ body {
 
 		<script src="TestWeb.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"TestWeb","experimentalVK":false,"fileSizes":{"TestWeb.pck":28609904,"TestWeb.wasm":43699190},"focusCanvas":true,"gdextensionLibs":[]};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"TestWeb","experimentalVK":false,"fileSizes":{"TestWeb.pck":28610256,"TestWeb.wasm":43699190},"focusCanvas":true,"gdextensionLibs":[]};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
@@ -214,6 +214,19 @@ const engine = new Engine(GODOT_CONFIG);
 		}, displayFailureNotice);
 	}
 }());
+
+// Web Audio Autoplay Policy unlocker
+function unlockWebAudioContext() {
+	try {
+		if (typeof GodotAudio !== 'undefined' && GodotAudio.ctx && GodotAudio.ctx.state !== 'running') {
+			GodotAudio.ctx.resume();
+		}
+	} catch (e) {}
+}
+['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'].forEach(function(evt) {
+	window.addEventListener(evt, unlockWebAudioContext, { passive: true });
+	document.addEventListener(evt, unlockWebAudioContext, { passive: true });
+});
 		</script>
 	</body>
 </html>
